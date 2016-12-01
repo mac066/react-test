@@ -17,7 +17,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <h2>Welcome to table</h2>
-            <Table tableData={this.props.apiData} />
+            <Table />
         </div>
       </div>
     );

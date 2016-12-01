@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import '../bower_components/bootstrap/dist/css/bootstrap.css'
-import Portal from 'react-portal';
+// import Portal from 'react-portal';
+import axios from 'axios'
 
 class Cell extends Component{
 	constructor(props){
 		super(props)
 		this.cellClick = this.cellClick.bind(this);
 		this.titleChange = this.titleChange.bind(this);
-		this.state = {title : this.props.cellData.title}
+		// this.state = {title : this.props.cellData.title}
 
 	}
 	cellClick(data){
@@ -17,74 +18,70 @@ class Cell extends Component{
 	titleChange(event){
 		this.setState({title: event.target.value});
 	}
+	
   render(){
-  	const row = 
-  			<tr>
-				  <td className="success"  onClick={() => this.cellClick(this.props.cellData.id)}>{this.props.cellData.id}</td>
-				  <td className="warning"  onClick={() => this.cellClick(this.props.cellData.title)}>{this.props.cellData.title}</td>
-				  <td className="warning" onClick={() => this.cellClick(this.props.cellData.userId)}>{this.props.cellData.userId}</td>
-			</tr>;
   	return (
-  		 <Portal closeOnEsc closeOnOutsideClick openByClickOn={row}>
-			<PseudoModal>
-			<h2>Modal</h2>
-				<form>
-					<label> Title </label>
-					<input type="text" value={this.state.title} placeholder="Description" onChange={this.titleChange} />
-				</form>
-			<p></p>
-			</PseudoModal>
-      </Portal>
-  		
+			<tr>
+				<td>
+					<form>
+						<input  type="checkbox" value="" />
+					</form>
+				</td>
+				 <td	className="success"  >{this.props.cellData.id}</td>
+				  <td className="warning" >{this.props.cellData.title}</td>
+				  <td className="warning" >{this.props.cellData.userId}</td>
+			</tr>	 
 	)
   }
 }
 
 class Table extends Component{
-	// constructor(props){
-	// 	super(props)
-	// }
+	constructor(props){
+		super(props)
+		this.state = {
+			cell : []
+		}
+	}
 	componentDidMount() {
+			axios.get('https://jsonplaceholder.typicode.com/posts').then((result)=>{
+			if(result.data && result.data.length){
+				// this.props.tableData = result.data
+				var cells = []
+	    	result.data.forEach((data)=>{
+	      	cells.push(<Cell cellData={data} key={data.id} />)
 
+				})
+				// console.log(cells)
+				this.setState({
+					cell : cells
+				})
+
+
+			}
+		})
 	}
 
 	componentWillUnmount() {
-		// clearInterval(this.timerID);
+	
 	}
 	render(){
-		var cells = []
-	    this.props.tableData.forEach((data)=>{
-	      cells.push(<Cell cellData={data} key={data.id} />)
-
-	    })
-
 		return (
 		<table className="table">
 			<tbody>
 				<tr>
+					<th></th>
 					<th>ID</th>
 					<th>Title</th> 
 					<th>Userid</th>
 				</tr>
-				{cells}
+					{this.state.cell}
 			</tbody>
   		</table>
 
 		);
 	}
 }
-export class PseudoModal extends React.Component {
 
-  render() {
-    return (
-      <div>
-        {this.props.children}
-        <p><button onClick={this.props.closePortal}>Close this</button></p>
-      </div>
-    );
-  }
-
-}
 
 
 export default Table
