@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 // import './App.css';
 
 import Table from './table'
-
+import store from './store'
+console.log(store)
+import { Provider } from "react-redux"
 
 
 
@@ -12,14 +14,16 @@ class App extends Component {
   //   super(props)
   // }
   render() {
-  
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to table</h2>
-            <Table />
+    <provider store={store}>
+        <div className="App">
+          <div className="App-header">
+            <h2>Welcome to table</h2>
+              <Table />
+          </div>
         </div>
-      </div>
+    </provider>
+      
     );
   }
 }

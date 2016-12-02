@@ -18,15 +18,17 @@ class Cell extends Component{
 	titleChange(event){
 		this.setState({title: event.target.value});
 	}
+	check(data){
+
+	}
 	
   render(){
   	return (
 			<tr>
-				<td>
-					<form>
-						<input  type="checkbox" value="" />
-					</form>
-				</td>
+			<td>
+				<input name="device" type="checkbox" onChange="{this.check.bind(this)}" value="" />
+			</td>
+				
 				 <td	className="success"  >{this.props.cellData.id}</td>
 				  <td className="warning" >{this.props.cellData.title}</td>
 				  <td className="warning" >{this.props.cellData.userId}</td>
@@ -64,19 +66,24 @@ class Table extends Component{
 	componentWillUnmount() {
 	
 	}
+
 	render(){
 		return (
-		<table className="table">
-			<tbody>
-				<tr>
-					<th></th>
-					<th>ID</th>
-					<th>Title</th> 
-					<th>Userid</th>
-				</tr>
-					{this.state.cell}
-			</tbody>
+			<div>
+					<table className="table">
+						<tbody>
+							<tr>
+								<th></th>
+								<th>ID</th>
+								<th>Title</th> 
+								<th>Userid</th>
+							</tr>
+					
+								{this.state.cell}
+						</tbody>
   		</table>
+			</div>
+	
 
 		);
 	}
