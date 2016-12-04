@@ -1,94 +1,34 @@
-import React, { Component } from 'react';
-import '../bower_components/bootstrap/dist/css/bootstrap.css'
-// import Portal from 'react-portal';
-import axios from 'axios'
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css'
 
-class Cell extends Component{
-	constructor(props){
-		super(props)
-		this.cellClick = this.cellClick.bind(this);
-		this.titleChange = this.titleChange.bind(this);
-		// this.state = {title : this.props.cellData.title}
+const Cell = ({data, onCheckBoxClicked}) => {
+    return (
+        <tr>
+            <td>
+                <input type="checkbox" defaultChecked={data.checked} onChange={onCheckBoxClicked(data)}/>
+            </td>
+            <td className="success">{data.id}</td>
+            <td className="warning">{data.title}</td>
+            <td className="warning">{data.userId}</td>
+        </tr>
+    );
+};
 
-	}
-	cellClick(data){
-		// this.refs.myPortal.openPortal()
-		// alert(data)
-	}
-	titleChange(event){
-		this.setState({title: event.target.value});
-	}
-	check(data){
+export default ({data, onCheckBoxClicked})=> {
+    return (
+        <table className="table">
+            <tbody>
+            <tr>
+                <th>SN</th>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Userid</th>
+            </tr>
+            { data.map(item => (
+                <Cell data={item} onCheckBoxClicked={onCheckBoxClicked} key={item.id}/>
+            ))}
+            </tbody>
+        </table>
 
-	}
-	
-  render(){
-  	return (
-			<tr>
-			<td>
-				<input name="device" type="checkbox" onChange="{this.check.bind(this)}" value="" />
-			</td>
-				
-				 <td	className="success"  >{this.props.cellData.id}</td>
-				  <td className="warning" >{this.props.cellData.title}</td>
-				  <td className="warning" >{this.props.cellData.userId}</td>
-			</tr>	 
-	)
-  }
-}
-
-class Table extends Component{
-	constructor(props){
-		super(props)
-		this.state = {
-			cell : []
-		}
-	}
-	componentDidMount() {
-			axios.get('https://jsonplaceholder.typicode.com/posts').then((result)=>{
-			if(result.data && result.data.length){
-				// this.props.tableData = result.data
-				var cells = []
-	    	result.data.forEach((data)=>{
-	      	cells.push(<Cell cellData={data} key={data.id} />)
-
-				})
-				// console.log(cells)
-				this.setState({
-					cell : cells
-				})
-
-
-			}
-		})
-	}
-
-	componentWillUnmount() {
-	
-	}
-
-	render(){
-		return (
-			<div>
-					<table className="table">
-						<tbody>
-							<tr>
-								<th></th>
-								<th>ID</th>
-								<th>Title</th> 
-								<th>Userid</th>
-							</tr>
-					
-								{this.state.cell}
-						</tbody>
-  		</table>
-			</div>
-	
-
-		);
-	}
-}
-
-
-
-export default Table
+    );
+};
